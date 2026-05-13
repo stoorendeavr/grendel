@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Adventures of Grendel — a multiplayer game from John Gardner's novel</title>
+  <meta name="description" content="A 2–12-player browser game adapted from John Gardner's 1971 novel Grendel. One player is the beast, hunting Hrothgar's hall; the rest are thanes. Iron cannot bite him — only bare-handed grip can wound him." />
+  <meta name="keywords" content="Grendel, John Gardner, Beowulf, multiplayer browser game, Hrothgar, Heorot, Hart, asymmetric horror, free game" />
+  <link rel="canonical" href="https://adventuresofgrendel.com/" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0a0707" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://adventuresofgrendel.com/" />
+  <meta property="og:title" content="Adventures of Grendel — multiplayer from Gardner's novel" />
+  <meta property="og:description" content="A browser arcade adapted from John Gardner's 1971 novel Grendel. One player is the kin of Cain. Iron cannot bite him." />
+  <meta property="og:image" content="https://adventuresofgrendel.com/og.svg" />
+  <meta property="og:site_name" content="Adventures of Grendel" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Adventures of Grendel" />
+  <meta name="twitter:description" content="A browser arcade adapted from John Gardner's 1971 novel Grendel." />
+  <meta name="twitter:image" content="https://adventuresofgrendel.com/og.svg" />
+
+  <!-- Schema.org / JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Adventures of Grendel",
+    "url": "https://adventuresofgrendel.com/",
+    "description": "A multiplayer browser game adapted from John Gardner's 1971 novel Grendel.",
+    "genre": ["Arcade", "Multiplayer", "Asymmetric Horror"],
+    "playMode": "MultiPlayer",
+    "gamePlatform": ["Browser", "Web"],
+    "operatingSystem": "Any",
+    "isBasedOn": {
+      "@type": "Book",
+      "name": "Grendel",
+      "author": { "@type": "Person", "name": "John Gardner" },
+      "datePublished": "1971",
+      "publisher": { "@type": "Organization", "name": "Alfred A. Knopf" }
+    },
+    "applicationCategory": "GameApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=UnifrakturMaguntia&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/style.css?v=__BUILD__" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23120a08'/%3E%3Ccircle cx='5' cy='8' r='1.4' fill='%23f4c468'/%3E%3Ccircle cx='11' cy='8' r='1.4' fill='%23f4c468'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <canvas id="atmosphere" aria-hidden="true"></canvas>
+
+  <div id="root">
+
+    <!-- HOME -->
+    <section id="screen-home" class="screen active">
+      <div class="brand">
+        <div class="brand-eyes" aria-hidden="true">
+          <span class="eye"></span><span class="eye"></span>
+        </div>
+        <div class="brand-overline">adventures of</div>
+        <h1 class="title">GRENDEL</h1>
+        <div class="ornament" aria-hidden="true"></div>
+        <p class="tagline">"<em>I alone exist.</em>" — <span class="dim">John Gardner, <i>Grendel</i> (1971), ch. 1.</span> Hart sleeps. The kin of Cain comes again.</p>
+      </div>
+
+      <div class="panel home-panel">
+        <label class="field">
+          <span>Your name</span>
+          <input id="input-name" maxlength="16" placeholder="Eofor of the Geats" autocomplete="off" />
+        </label>
+
+        <div class="actions">
+          <button id="btn-create" class="primary big">
+            <span class="btn-glyph" aria-hidden="true">✦</span>
+            <span class="btn-label">Stalk from the moor</span>
+            <span class="btn-sub">you become Grendel</span>
+          </button>
+          <div class="or"><span>or join Hrothgar's hall</span></div>
+          <div class="join-row">
+            <input id="input-code" maxlength="5" placeholder="CODE" autocomplete="off" />
+            <button id="btn-join">Take a bench</button>
+          </div>
+          <button id="btn-demo" class="ghost demo-btn">
+            <span class="demo-glyph" aria-hidden="true">▶</span>
+            <span>Try alone — versus three bot thanes</span>
+          </button>
+        </div>
+
+        <p id="home-error" class="error" hidden></p>
+      </div>
+
+      <footer class="foot">
+        <span class="dim">2–12 players · drop your weapon to grip · the iron does not bite</span>
+      </footer>
+    </section>
+
+    <!-- LOBBY -->
+    <section id="screen-lobby" class="screen">
+      <div class="lobby-card">
+        <header class="lobby-card-head">
+          <div>
+            <div class="dim tiny">Room code · send to your hall-fellows</div>
+            <button id="lobby-code" class="code-pill" title="Click to copy">
+              <span id="lobby-code-text">—</span>
+              <span class="copy-hint">copy</span>
+            </button>
+            <div id="lobby-copied" class="copied" hidden>Copied — share with the hall.</div>
+          </div>
+          <button id="btn-leave-lobby" class="ghost">Leave</button>
+        </header>
+
+        <section class="lobby-body">
+          <div class="lobby-section">
+            <h3 class="section-title"><span class="title-bar"></span>Inside Heorot</h3>
+            <ul id="lobby-players" class="players"></ul>
+          </div>
+          <div class="lobby-rules">
+            <h4>The hunt</h4>
+            <ul>
+              <li><b>Grendel</b>, "pointless, ridiculous monster," stalks Hart. King <b>Hrothgar</b> sleeps in his high seat. (Gardner, ch. 1, 4)</li>
+              <li><b>Iron does not bite him.</b> The Dragon laid a charm on him in his cave of gold. (ch. 5)</li>
+              <li>Any thane who drops their weapon can grip the beast — the tactic of the Stranger. (ch. 11–12)</li>
+              <li><b>The Shaper ♪</b>: one thane is the harper. While he lives and sings nearby, grippers drain Grendel ~45% faster. (ch. 3-4)</li>
+              <li><b>Villagers win</b> when the arm tears at the socket. (ch. 12) <b>Grendel wins</b> at 20 kills or at dawn — twelve years of war already. (ch. 6)</li>
+            </ul>
+            <h4 class="scop-head">From the book</h4>
+            <ul class="scop-notes">
+              <li>The novel has <b>12 chapters</b>, one for each zodiac sign — Aries through Pisces.</li>
+              <li><b>"Stones; dirt; trees."</b> — Gardner, ch. 1. The world Grendel describes.</li>
+              <li>"<em>The world resists me and I resist the world. That's all there is.</em>" (ch. 1)</li>
+              <li>The first thane Grendel takes is named <b>Hondscio</b> (Beowulf's Geat companion, retained from the source).</li>
+              <li>The famous closing line: "<em>Poor Grendel's had an accident. So may you all.</em>" (ch. 12)</li>
+            </ul>
+          </div>
+        </section>
+
+        <footer class="lobby-foot">
+          <div>
+            <button id="btn-start" class="primary big" disabled>
+              <span class="btn-glyph" aria-hidden="true">⚔</span>
+              <span class="btn-label">Begin the night</span>
+            </button>
+            <p id="lobby-hint" class="dim small">Waiting for a thane to join…</p>
+          </div>
+          <div class="lobby-tip dim tiny">
+            <kbd>WASD</kbd> move · <kbd>mouse</kbd> aim · <kbd>SPACE</kbd>/click attack · <kbd>Q</kbd> <kbd>E</kbd> <kbd>R</kbd> abilities
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- GAME -->
+    <section id="screen-game" class="screen game">
+      <canvas id="canvas"></canvas>
+
+      <div id="hud" class="hud">
+        <div class="hud-top">
+          <div class="hud-left">
+            <div id="hud-role" class="role-tag"></div>
+            <div class="round-meta">
+              <div id="hud-timer" class="timer">8:00</div>
+              <div class="dot-sep">·</div>
+              <div id="hud-kills" class="kills">
+                <span class="kills-num">0</span>
+                <span class="kills-sep">/</span>
+                <span class="kills-tot">20</span>
+                <span class="kills-lbl">slain</span>
+              </div>
+            </div>
+          </div>
+          <div class="hud-right">
+            <div class="room-tag">
+              <span class="room-lbl">HEOROT</span>
+              <span id="hud-room" class="room-code">—</span>
+            </div>
+            <div id="hud-demo-tag" class="demo-tag" hidden>DEMO · vs bots</div>
+          </div>
+        </div>
+
+        <div class="hud-bottom">
+          <div id="hud-hp" class="hp">
+            <div class="hp-icon" aria-hidden="true">♥</div>
+            <div class="hp-stack">
+              <div class="hp-row">
+                <span class="hp-label">LIFE</span>
+                <span id="hp-text" class="hp-text">100 / 100</span>
+              </div>
+              <div class="hp-bar">
+                <div id="hp-fill" class="hp-fill"></div>
+                <div class="hp-bar-notches" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="hud-weapon" class="weapon-card">
+            <div class="weapon-icon" aria-hidden="true">·</div>
+            <div class="weapon-meta">
+              <div class="weapon-name">No weapon</div>
+              <div class="weapon-dura"><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+
+          <div id="hud-abilities" class="abilities" hidden>
+            <button data-ab="roar"     class="ab">
+              <span class="ab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12 Q2 12 2 9 M5 12 Q2 12 2 15 M9 6 Q6 12 9 18 M14 4 Q11 12 14 20 M19 2 Q16 12 19 22" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+              </span>
+              <span class="lbl">ROAR</span>
+              <span class="key">Q</span>
+              <span class="cd"></span>
+            </button>
+            <button data-ab="leap"     class="ab">
+              <span class="ab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 20 Q12 2 21 20" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="3" cy="20" r="1.6" fill="currentColor"/><circle cx="21" cy="20" r="1.6" fill="currentColor"/></svg>
+              </span>
+              <span class="lbl">LEAP</span>
+              <span class="key">E</span>
+              <span class="cd"></span>
+            </button>
+            <button data-ab="darkness" class="ab">
+              <span class="ab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M18 14 A8 8 0 1 1 10 6 A6 6 0 0 0 18 14 Z" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+              </span>
+              <span class="lbl">DARKNESS</span>
+              <span class="key">R</span>
+              <span class="cd"></span>
+            </button>
+          </div>
+        </div>
+
+        <div id="kill-prompt" class="kill-prompt" hidden>
+          <div class="kp-inner">
+            <span class="kp-pulse"></span>
+            <span class="kp-label">SNATCH</span>
+            <span class="kp-key">SPACE</span>
+          </div>
+        </div>
+
+        <div id="grapple-prompt" class="grapple-prompt" hidden>
+          <div class="gp-inner">
+            <span class="gp-pulse"></span>
+            <span class="gp-label">GRIP</span>
+            <span class="gp-key">SPACE</span>
+            <span class="gp-sub">hold the beast — Grendel cannot break free</span>
+          </div>
+        </div>
+
+        <div id="grapple-banner" class="grapple-banner" hidden>
+          <span class="gb-lbl">THE HANDGRIP HOLDS</span>
+        </div>
+
+        <aside id="saga-feed" class="saga"></aside>
+
+        <div id="respawn-overlay" class="respawn" hidden>
+          <div class="respawn-inner">
+            <div class="respawn-title">YOU FELL</div>
+            <div id="respawn-countdown" class="respawn-count">5</div>
+            <div class="dim small">The mead-benches wait · you rise again</div>
+          </div>
+        </div>
+
+        <div id="round-end" class="round-end" hidden>
+          <div class="re-inner">
+            <div class="re-mark" aria-hidden="true"></div>
+            <div id="re-title" class="re-title">—</div>
+            <div id="re-sub"   class="re-sub">—</div>
+            <blockquote id="re-quote" class="re-quote" hidden>
+              <span id="re-quote-text"></span>
+              <cite id="re-quote-cite"></cite>
+            </blockquote>
+            <div class="re-actions">
+              <button id="btn-restart" class="primary big" hidden>
+                <span class="btn-glyph" aria-hidden="true">⟲</span>
+                <span class="btn-label">Sing it again</span>
+              </button>
+            </div>
+            <div id="re-waiting" class="dim small" hidden>Waiting for Grendel to return…</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="connection-banner" class="conn-banner" hidden>
+        <span class="conn-dot"></span>Reconnecting to the hall…
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/main.js?v=__BUILD__"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.grendel.server</string>
+
+  <!-- Use Node from Homebrew; --watch restarts on any file change in the cwd. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>--watch</string>
+    <string>server.js</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/shauryasagents/Code/wallpaint/.claude/worktrees/hungry-hugle-ae705f/grendel</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PORT</key>
+    <string>3000</string>
+    <key>NODE_ENV</key>
+    <string>production</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+
+  <!-- Keep the process up. -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+
+  <!-- Tame restart spam if the server keeps crashing. -->
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/grendel-server.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/grendel-server.log</string>
+</dict>
+</plist>

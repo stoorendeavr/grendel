@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="hearth" cx="50%" cy="55%" r="55%">
+      <stop offset="0%" stop-color="#ff8a3a" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#7a1e10" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0a0606" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="title-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#fff0d4"/>
+      <stop offset="55%" stop-color="#f4c468"/>
+      <stop offset="100%" stop-color="#6b1209"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0606"/>
+  <rect width="1200" height="630" fill="url(#hearth)"/>
+
+  <!-- Scanlines -->
+  <g opacity="0.08">
+    <line x1="0" y1="40"  x2="1200" y2="40"  stroke="#000" stroke-width="2"/>
+    <line x1="0" y1="100" x2="1200" y2="100" stroke="#000" stroke-width="2"/>
+    <line x1="0" y1="200" x2="1200" y2="200" stroke="#000" stroke-width="2"/>
+    <line x1="0" y1="300" x2="1200" y2="300" stroke="#000" stroke-width="2"/>
+    <line x1="0" y1="430" x2="1200" y2="430" stroke="#000" stroke-width="2"/>
+    <line x1="0" y1="530" x2="1200" y2="530" stroke="#000" stroke-width="2"/>
+  </g>
+
+  <!-- Grendel eyes silhouette -->
+  <g transform="translate(600 220)">
+    <circle cx="-40" cy="0" r="20" fill="#f4c468" opacity="0.95"/>
+    <circle cx="-40" cy="0" r="8"  fill="#0a0606"/>
+    <circle cx="40"  cy="0" r="20" fill="#f4c468" opacity="0.95"/>
+    <circle cx="40"  cy="0" r="8"  fill="#0a0606"/>
+    <ellipse cx="-40" cy="0" rx="48" ry="14" fill="#f4c468" opacity="0.18"/>
+    <ellipse cx="40"  cy="0" rx="48" ry="14" fill="#f4c468" opacity="0.18"/>
+  </g>
+
+  <!-- Ornament rule -->
+  <g transform="translate(600 320)" fill="#a07a3a">
+    <rect x="-260" y="-1" width="520" height="2"/>
+    <rect x="-260" y="-7" width="14"  height="14" transform="rotate(45 -253 0)"/>
+    <rect x="246"  y="-7" width="14"  height="14" transform="rotate(45  253 0)"/>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="430" text-anchor="middle"
+        font-family="Cinzel, Georgia, serif" font-weight="800"
+        font-size="148" letter-spacing="22"
+        fill="url(#title-grad)">GRENDEL</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="495" text-anchor="middle"
+        font-family="Cinzel, Georgia, serif" font-style="italic"
+        font-size="28" letter-spacing="6"
+        fill="#c8b9a3">a multiplayer game from John Gardner's novel</text>
+
+  <!-- Domain -->
+  <text x="600" y="560" text-anchor="middle"
+        font-family="JetBrains Mono, monospace" font-size="22"
+        letter-spacing="8" fill="#8a7765">adventuresofgrendel.com</text>
+</svg>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.grendel.gitpull</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/shauryasagents/Code/wallpaint/.claude/worktrees/hungry-hugle-ae705f/grendel/deploy/grendel-git-pull.sh</string>
+  </array>
+
+  <!-- Run every 60 seconds. -->
+  <key>StartInterval</key>
+  <integer>60</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/grendel-gitpull.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/grendel-gitpull.log</string>
+</dict>
+</plist>
