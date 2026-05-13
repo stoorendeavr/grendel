@@ -1,12 +1,12 @@
 #!/bin/bash
 # Periodic git pull for the production tunnel host. When new commits land on
-# origin/claude/hungry-hugle-ae705f, pull them; `node --watch` in the server
+# origin/main, pull them; `node --watch` in the server
 # launchd job will see the file change and restart automatically.
 
 set -e
 
 REPO=/Users/shauryasagents/Code/wallpaint/.claude/worktrees/hungry-hugle-ae705f
-BRANCH=claude/hungry-hugle-ae705f
+BRANCH=main
 LOG=/tmp/grendel-gitpull.log
 
 export PATH=/opt/homebrew/bin:/usr/bin:/bin
