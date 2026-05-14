@@ -5,7 +5,7 @@
 
 set -e
 
-REPO=/Users/shauryasagents/Code/wallpaint/.claude/worktrees/hungry-hugle-ae705f
+REPO=/Users/shauryasagents/Code/grendel
 BRANCH=main
 LOG=/tmp/grendel-gitpull.log
 
@@ -30,11 +30,11 @@ echo "[$(date -u +%FT%TZ)] pulling $LOCAL → $REMOTE" >>"$LOG"
 git reset --hard origin/"$BRANCH" >>"$LOG" 2>&1
 
 # If package.json changed, refresh production deps
-if git diff --name-only "$LOCAL" "$REMOTE" | grep -q '^grendel/package.json$'; then
+if git diff --name-only "$LOCAL" "$REMOTE" | grep -q '^package.json$'; then
   echo "[$(date -u +%FT%TZ)] package.json changed — npm ci --omit=dev" >>"$LOG"
-  (cd grendel && npm ci --omit=dev --no-audit --no-fund) >>"$LOG" 2>&1 || true
+  npm ci --omit=dev --no-audit --no-fund >>"$LOG" 2>&1 || true
 fi
 
 # Touch the entrypoint so `node --watch` is guaranteed to restart even if the
 # changed file was outside its watch graph.
-touch grendel/server.js
+touch server.js
